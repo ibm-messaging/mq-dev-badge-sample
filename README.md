@@ -28,7 +28,7 @@ java -cp ./com.ibm.mq.allclient-9.0.4.0.jar:./javax.jms-api-2.0.1.jar:. com.ibm.
 ````
 
 ## Environment variables
-You can override the default MQ connection settings using environment variables on the host where you run your Java code.
+You can override the default MQ connection settings using environment variables on the system where you run your Reseller application code.
 
 * **MQ_BADGE_QM_HOSTNAME** - Specify the Host name or IP address of your queue manager 
 * **MQ_BADGE_QM_NAME** - Set the queue manager name
