@@ -63,16 +63,16 @@ public class SessionBuilder
     //try {
       // Create a connection factory
       logger.finest("Creating Connection Factory");
-      String host = HOST;
+      String host = getSystemEnvString("MQ_BADGE_QM_HOSTNAME", HOST);;
       int port = PORT;
+      String qmgr = getSystemEnvString("MQ_BADGE_QM_NAME", QMGR);;
+      String user = getSystemEnvString("MQ_BADGE_USER", USER);;
+      String password = getSystemEnvString("MQ_BADGE_PASSWORD", PASSWORD);
+      String channel = getSystemEnvString("MQ_BADGE_CHANNEL", CHANNEL);
 
-      if (System.getenv("MQ_DEMO_QM_HOSTNAME") != null) {
-			  host = System.getenv("MQ_DEMO_QM_HOSTNAME");
-		  }
-
-      if (System.getenv("MQ_DEMO_QM_PORT") != null) {
+      if (System.getenv("MQ_BADGE_QM_PORT") != null) {
         try {
-			    port = Integer.parseInt(System.getenv("MQ_DEMO_QM_PORT"));
+			    port = Integer.parseInt(System.getenv("MQ_BADGE_QM_PORT"));
         }
         catch (NumberFormatException e) {
           logger.warning(String.format("Invalid port specified defaulting to %d", PORT));
