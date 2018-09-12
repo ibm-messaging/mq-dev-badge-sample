@@ -63,16 +63,16 @@ public class SessionBuilder
     try {
       // Create a connection factory
       logger.finest("Creating Connection Factory");
-      String host = HOST;
+      String host = getSystemEnvString("MQ_BADGE_QM_HOSTNAME", HOST);;
       int port = PORT;
+      String qmgr = getSystemEnvString("MQ_BADGE_QM_NAME", QMGR);;
+      String user = getSystemEnvString("MQ_BADGE_USER", USER);;
+      String password = getSystemEnvString("MQ_BADGE_PASSWORD", PASSWORD);
+      String channel = getSystemEnvString("MQ_BADGE_CHANNEL", CHANNEL);
 
-      if (System.getenv("MQ_DEMO_QM_HOSTNAME") != null) {
-			  host = System.getenv("MQ_DEMO_QM_HOSTNAME");
-		  }
-
-      if (System.getenv("MQ_DEMO_QM_PORT") != null) {
+      if (System.getenv("MQ_BADGE_QM_PORT") != null) {
         try {
-			    port = Integer.parseInt(System.getenv("MQ_DEMO_QM_PORT"));
+			    port = Integer.parseInt(System.getenv("MQ_BADGE_QM_PORT"));
         }
         catch (NumberFormatException e) {
           logger.warning(String.format("Invalid port specified defaulting to %d", PORT));
@@ -85,11 +85,11 @@ public class SessionBuilder
       // Set the properties
       cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, host);
       cf.setIntProperty(WMQConstants.WMQ_PORT, port);
-      cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
+      cf.setStringProperty(WMQConstants.WMQ_CHANNEL, channel);
       cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
-      cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
-      cf.setStringProperty(WMQConstants.USERID, USER);
-      cf.setStringProperty(WMQConstants.PASSWORD, PASSWORD);
+      cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, qmgr);
+      cf.setStringProperty(WMQConstants.USERID, user);
+      cf.setStringProperty(WMQConstants.PASSWORD, password);
       cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
       cf.setStringProperty(WMQConstants.CLIENT_ID, SUBSCRIPTION_NAME);
 
@@ -127,6 +127,19 @@ public class SessionBuilder
       logger.severe("Unable to close JMS Session");
       jmsex.printStackTrace();
     }
+  }
+
+  /**
+   * Determines System Envrionment String
+   *
+   * @param envparam The envrionment string to find
+   * @param defaultvalue The default value to use
+   * @return environment string if found else default
+   */
+
+  private static String getSystemEnvString(String envparam, String defaultvalue) {
+    return (System.getenv(envparam) != null) ?
+          System.getenv(envparam) : defaultvalue;
   }
 
 }

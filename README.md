@@ -17,6 +17,10 @@ To compile run
 javac -cp ./com.ibm.mq.allclient-9.0.4.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/demo/*.java
 ````
 
+## Application
+The application will run as a code stub. When run the application logs will
+indicate where code changes need to be made. 
+
 To run the application
 
 ````
