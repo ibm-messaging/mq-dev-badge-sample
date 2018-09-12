@@ -45,7 +45,6 @@ public class TicketRequester
     private static String CONFIRMATION_QUEUE = "confirmation";
     private static String ACCEPTED = "Accepted";
 
-
     /**
      * Constructs a TicketRequester with the Session representing
      * the connection to MQ.
@@ -71,6 +70,8 @@ public class TicketRequester
     public static String put(Message message, int numTickets)
     {
       String correlationID = null;
+      boolean isCommited = false;
+
 
       try {
         logger.finest("Building message to request tickets");
@@ -87,6 +88,8 @@ public class TicketRequester
         MessageProducer producer = session.createProducer(requestQueue);
 
         producer.send(requestMessage);
+        session.commit();
+        isCommited = true;
         logger.finest("Sent request for tickets");
        }
        catch (JAXBException e) {
@@ -98,6 +101,15 @@ public class TicketRequester
        {
          correlationID = null;
          e.printStackTrace();
+       } finally {
+         if (session != null && !isCommited) {
+           try {
+             session.rollback();
+           } catch (JMSException e) {
+             logger.warning("Error in rollback call");
+             e.printStackTrace();
+           }
+         }
        }
 
       return correlationID;
@@ -115,11 +127,14 @@ public class TicketRequester
     public boolean get(String correlationID) {
       boolean success = false;
       Message responseMsg = null;
+      boolean isCommited = false;
       try {
         Destination destination = session.createQueue(CONFIRMATION_QUEUE);
         MessageConsumer messageConsumer = session.createConsumer(destination, "JMSCorrelationID='"+correlationID+"'");
         logger.info("Waiting for 30 seconds for a response");
         responseMsg = messageConsumer.receive(30000);
+        session.commit();
+        isCommited = true;
         if (responseMsg != null) {
           success = isAccepted(responseMsg);
         }
@@ -127,6 +142,15 @@ public class TicketRequester
       catch (JMSException e) {
         logger.warning("Error connecting to confirmation queue");
         e.printStackTrace();
+      } finally {
+        if (session != null && !isCommited) {
+          try {
+            session.rollback();
+          } catch (JMSException e) {
+            logger.warning("Error in rollback call");
+            e.printStackTrace();
+          }
+        }
       }
       return success;
     }

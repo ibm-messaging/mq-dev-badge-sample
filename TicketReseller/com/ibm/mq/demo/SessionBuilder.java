@@ -125,4 +125,17 @@ public class SessionBuilder
     }
   }
 
+  /**
+   * Determines System Envrionment String
+   *
+   * @param envparam The envrionment string to find
+   * @param defaultvalue The default value to use
+   * @return environment string if found else default
+   */
+
+  private static String getSystemEnvString(String envparam, String defaultvalue) {
+    return (System.getenv(envparam) != null) ?
+          System.getenv(envparam) : defaultvalue;
+  }
+
 }
