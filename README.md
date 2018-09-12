@@ -26,3 +26,14 @@ To run the application
 ````
 java -cp ./com.ibm.mq.allclient-9.0.4.0.jar:./javax.jms-api-2.0.1.jar:. com.ibm.mq.demo.Reseller
 ````
+
+## Environment variables
+You can override the default MQ connection settings using environment variables on the host where you run your Java code.
+
+* **MQ_BADGE_QM_HOSTNAME** - Specify the Host name or IP address of your queue manager 
+* **MQ_BADGE_QM_NAME** - Set the queue manager name
+* **MQ_BADGE_QM_PORT** - Listener port for your queue manager
+* **MQ_BADGE_CHANNEL** - MQ Channel name
+* **MQ_BADGE_USER** - User name that application uses to connect to MQ
+* **MQ_BADGE_PASSWORD** - Password that the application uses to connect to MQ
+     
