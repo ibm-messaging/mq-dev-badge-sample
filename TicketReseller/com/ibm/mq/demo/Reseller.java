@@ -49,6 +49,7 @@ public class Reseller
       // The JMS Code to subscribe to a topic will be
       // in TicketSubscriber.java
       TicketSubscriber ticketSubscriber = new TicketSubscriber(session, DESTINATION_NAME);
+      TicketRequester ticketRequester = new TicketRequester(session);
       if (ticketSubscriber.isGood()) {
         logger.fine("Entering wait loop for event tickets");
         while(true) {
@@ -63,7 +64,6 @@ public class Reseller
               // Challenge : Processes a publication
               int numToReserve = howMany(message);
 
-              TicketRequester ticketRequester = new TicketRequester(session);
               logger.fine("Sending request to purchase tickets over peer to peer");
 
               // Challenge : Receiving a publication triggers a put

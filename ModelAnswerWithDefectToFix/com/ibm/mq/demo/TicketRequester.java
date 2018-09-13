@@ -41,10 +41,9 @@ public class TicketRequester
     // session needs to be a static else createTextMessage generates a
     // compilation error
     private static Session session = null;
-    private static String PURCHASE_QUEUE = "purchase";
-    private static String CONFIRMATION_QUEUE = "confirmation";
+    private static String PURCHASE_QUEUE = "purchase_queue";
+    private static String CONFIRMATION_QUEUE = "confirmation_queue";
     private static String ACCEPTED = "Accepted";
-
 
     /**
      * Constructs a TicketRequester with the Session representing
@@ -73,27 +72,24 @@ public class TicketRequester
       String correlationID = null;
       boolean isCommited = false;
 
+
       try {
         logger.finest("Building message to request tickets");
-
         Event event = EventFactory.newEventFromMessage(message);
         RequestTickets request = new RequestTickets(event, numTickets);
 
         TextMessage requestMessage = session.createTextMessage(request.toXML());
         correlationID = UUID.randomUUID().toString();
-
-        System.out.println("Challenge : Receiving a publication triggers a put then requests to purchase a batch of tickets");
-        System.out.println("Your code to put a message onto the purchase queue will go here");
-        // The following code needs to be added here
-        logger.finest("Challenge Add code to : Set the JMS Correlation ID");
-        logger.finest("Challenge Add code to : Set the JMS Expiration");
+        requestMessage.setJMSCorrelationID(correlationID);
+        requestMessage.setJMSExpiration(900000);
 
         logger.finest("Sending request to purchase tickets");
+        Queue requestQueue = session.createQueue(PURCHASE_QUEUE);
+        MessageProducer producer = session.createProducer(requestQueue);
 
-        // Create the purchase Queue
-        // Create a MessageProducer
-        // Send the Request
-
+        producer.send(requestMessage);
+        session.commit();
+        isCommited = true;
         logger.finest("Sent request for tickets");
        }
        catch (JAXBException e) {
@@ -115,6 +111,7 @@ public class TicketRequester
            }
          }
        }
+
       return correlationID;
     }
 
@@ -131,31 +128,30 @@ public class TicketRequester
       boolean success = false;
       Message responseMsg = null;
       boolean isCommited = false;
-      //try {
-        logger.finest("Performing receive on confirmation queue");
-        System.out.println("Challenge : our reseller application does a get from this queue");
-        System.out.println("Your code to receive a message from the confirmation queue will go here");
-        // The following code needs to be added here
-        logger.finest("Challenge Add code to : Create Confirmation Queue");
-        logger.finest("Challenge Add code to : Create a Consumer");
-        logger.finest("Challenge Add code to : Receive a Message");
-
+      try {
+        Destination destination = session.createQueue(CONFIRMATION_QUEUE);
+        MessageConsumer messageConsumer = session.createConsumer(destination, "JMSCorrelationID='"+correlationID+"'");
+        logger.info("Waiting for 30 seconds for a response");
+        responseMsg = messageConsumer.receive(30000);
+        session.commit();
+        isCommited = true;
         if (responseMsg != null) {
           success = isAccepted(responseMsg);
         }
-      //}
-      //catch (JMSException e) {
-      //  logger.warning("Error connecting to confirmation queue");
-      //  e.printStackTrace();
-      //} finally {
-      //  if (session != null && !isCommited) {
-      //    try {
-      //      session.rollback();
-      //    } catch (JMSException e) {
-      //      logger.warning("Error in rollback call");
-      //      e.printStackTrace();
-      //    }
-      //  }
+      }
+      catch (JMSException e) {
+        logger.warning("Error connecting to confirmation queue");
+        e.printStackTrace();
+      } finally {
+        if (session != null && !isCommited) {
+          try {
+            session.rollback();
+          } catch (JMSException e) {
+            logger.warning("Error in rollback call");
+            e.printStackTrace();
+          }
+        }
+      }
       return success;
     }
 
