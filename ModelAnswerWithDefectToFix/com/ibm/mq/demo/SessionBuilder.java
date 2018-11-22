@@ -45,6 +45,8 @@ public class SessionBuilder
   private static String PASSWORD = "passw0rd";
   private static String SUBSCRIPTION_NAME = "SampleSubscriber";
 
+  private static Boolean TRANSACTED = false;
+
   /**
    * Uses the JMS Client classes to establish a connection to the Queue Manager
    * running on the MQ Server
@@ -96,7 +98,7 @@ public class SessionBuilder
       // Create JMS objects
       logger.finest("Creating Connection Session");
       Connection connection = cf.createConnection();
-      session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+      session = connection.createSession(TRANSACTED, Session.AUTO_ACKNOWLEDGE);
       connection.start();
 
       logger.fine("JMS session connection initialised successfully");
