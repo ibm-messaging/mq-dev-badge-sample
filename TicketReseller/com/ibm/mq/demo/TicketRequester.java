@@ -71,7 +71,6 @@ public class TicketRequester
     public static String put(Message message, int numTickets)
     {
       String correlationID = null;
-      boolean isCommited = false;
 
       try {
         logger.finest("Building message to request tickets");
@@ -105,16 +104,8 @@ public class TicketRequester
        {
          correlationID = null;
          e.printStackTrace();
-       } finally {
-         if (session != null && !isCommited) {
-           try {
-             session.rollback();
-           } catch (JMSException e) {
-             logger.warning("Error in rollback call");
-             e.printStackTrace();
-           }
-         }
        }
+
       return correlationID;
     }
 
@@ -130,7 +121,7 @@ public class TicketRequester
     public boolean get(String correlationID) {
       boolean success = false;
       Message responseMsg = null;
-      boolean isCommited = false;
+
       //try {
         logger.finest("Performing receive on confirmation queue");
         System.out.println("Challenge : our reseller application does a get from this queue");
@@ -147,15 +138,8 @@ public class TicketRequester
       //catch (JMSException e) {
       //  logger.warning("Error connecting to confirmation queue");
       //  e.printStackTrace();
-      //} finally {
-      //  if (session != null && !isCommited) {
-      //    try {
-      //      session.rollback();
-      //    } catch (JMSException e) {
-      //      logger.warning("Error in rollback call");
-      //      e.printStackTrace();
-      //    }
-      //  }
+      //}
+
       return success;
     }
 
