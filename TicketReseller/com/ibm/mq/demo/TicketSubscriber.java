@@ -91,7 +91,6 @@ public class TicketSubscriber
       */
     public Message waitForPublish () throws PublishWaitException {
       Message message = null;
-      boolean isCommited = false;
       try {
         logger.finest("Waiting for a message");
         System.out.println("Challenge : Receives a publication");
@@ -119,16 +118,8 @@ public class TicketSubscriber
         if (3 > concurrentErrorCounter++) {
           throw new PublishWaitException(String.format("JMS Exception seen %d times", concurrentErrorCounter));
         }
-      } finally {
-          if (session != null && !isCommited) {
-            try {
-              session.rollback();
-            } catch (JMSException e){
-              logger.warning("Error in rollback");
-              e.printStackTrace();
-            }
-          }
-        }
+      }
+
       return message;
     }
 }
