@@ -13,6 +13,7 @@
 # limitations under the License.
 
 FROM ibmcom/mq:latest
+USER root
 COPY GenerateEvents.jar /data/GenerateEvents.jar
 COPY startApp.sh /data/startApp.sh
 COPY 20-config.mqsc /etc/mqm/
