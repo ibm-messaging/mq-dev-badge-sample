@@ -1,6 +1,5 @@
-# © Copyright IBM Corporation 2015, 2018
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
+# © Copyright IBM Corporation 2015, 2018#
+# Licensed under the Apache License, Vesion 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -19,4 +18,5 @@ COPY startApp.sh /data/startApp.sh
 COPY 20-config.mqsc /etc/mqm/
 RUN echo app:passw0rd | chpasswd
 RUN chmod a+x /data/startApp.sh
+USER mqm
 ENTRYPOINT ["/data/startApp.sh"]
