@@ -8,7 +8,7 @@ a client application for the MQ Badge.
 
 [Take a look at the IBM Developer Essentials course](https://developer.ibm.com/messaging/learn-mq/mq-tutorials/mq-dev-essentials/)
 <p align="centre">
-    <img src="https://github.ibm.com/Benjamin-Brunyee/mq-badge-app/blob/master/gitImages/MQ-Badge-Class-Allocations.png?raw=true">
+    <img src="https://github.com/ibm-messaging/mq-dev-badge-sample/tree/master/DockerFiles/gitImages/MQ-Badge-Class-Allocations.png?raw=true">
 </p>
 
 ## Getting Started
