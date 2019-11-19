@@ -30,7 +30,7 @@ Steps for running the application on your local machine - <b>Do not follows thes
     * ```mkdir jarFiles```
 1. Download all the ```.jar``` files above ^^^.
 1. Once the files have downloaded, throw them into the ```jarFiles``` directory.
-1. Compile the source code with relevant class paths.
+1. From the ```TicketGenerator``` folder, compile the source code with relevant class paths.
     * Linux & Mac ```javac -cp ./jarFiles/*: com/ibm/mq/badge/*.java```
     * Windows ```javac -cp .\jarFiles\*; com\ibm\mq\badge\*.java```
 1. Execute the code.
