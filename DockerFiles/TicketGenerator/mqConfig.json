@@ -1,0 +1,14 @@
+{
+    "HOST":"localhost",
+    "PORT":"1414",
+    "CHANNEL":"SYSTEM.DEF.SVRCONN",
+    "QMGR":"QM1",
+    "APP_USER":"app",
+    "APP_PASSWORD":"passw0rd",
+    "QUEUE_NAME":"DEV.QUEUE.1",
+    "MODEL_QUEUE_NAME":"DEV.APP.MODEL.QUEUE",
+    "DYNAMIC_QUEUE_PREFIX":"APP.REPLIES.*",
+    "TOPIC_NAME":"newTickets",
+    "CIPHER_SUITE":"",
+    "KEY_REPOSITORY": "./keys/clientkey"
+}
