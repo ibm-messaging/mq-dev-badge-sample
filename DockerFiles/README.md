@@ -17,6 +17,7 @@ a client application for the MQ Badge.
 Make sure you have these ```.jar``` files in your class path when compiling and executing code.
 
 ### Step-by-step
+Steps for running the application on your local machine - Do not follows these steps for the MQ badge
 1. Create a directory.
     * ```mkdir mq-badge-app```
 1. Change into that directory.
