@@ -31,8 +31,8 @@ Steps for running the application on your local machine - <b>Do not follows thes
 1. Download all the ```.jar``` files above ^^^.
 1. Once the files have downloaded, throw them into the ```jarFiles``` directory.
 1. Compile the source code with relevant class paths.
-    * Linux ```javac -cp ./jarFiles/*: com/ibm/mq/badge/*.java```
+    * Linux & Mac ```javac -cp ./jarFiles/*: com/ibm/mq/badge/*.java```
     * Windows ```javac -cp .\jarFiles\*; com\ibm\mq\badge\*.java```
 1. Execute the code.
-    * Linux ```java -cp ./jarFiles/*: com.ibm.mq.badge.Manager```
+    * Linux & Mac ```java -cp ./jarFiles/*: com.ibm.mq.badge.Manager```
     * Windows ```java -cp .\jarFiles\*; com.ibm.mq.badge.Manager```
