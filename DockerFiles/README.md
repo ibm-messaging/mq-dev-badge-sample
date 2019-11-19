@@ -23,9 +23,9 @@ Steps for running the application on your local machine - <b>Do not follows thes
 1. Change into that directory.
     * ```cd mq-badge-app```
 1. Clone this repository.
-    * ```git clone "git@github.ibm.com:Benjamin-Brunyee/mq-badge-app.git"```
+    * ```git clone "https://github.com/ibm-messaging/mq-dev-badge-sample.git"```
 1. Change directory into the TicketGenerator directory.
-    * ```cd mq-badge-app/TicketGenerator```
+    * ```cd mq-dev-badge-sample/DockerFiles/TicketGenerator```
 1. Create a new directory inside.
     * ```mkdir jarFiles```
 1. Download all the ```.jar``` files above ^^^.
