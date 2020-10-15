@@ -39,10 +39,8 @@ RUN cd /data/TicketGenerator && \
 #     9.2.0.0-r1
 #     9.1.5.0-r2
 #     9.1.5.0-r1
-#     9.1.4.0-r1
 #
-# FROM ibmcom/mq:latest
-FROM ibmcom/mq:9.1.4.0-r1
+FROM ibmcom/mq:latest
 USER 0
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
