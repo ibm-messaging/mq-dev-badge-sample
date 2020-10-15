@@ -1,4 +1,4 @@
-# © Copyright 2019 IBM Corporation
+# © Copyright 2019, 2020 IBM Corporation
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,10 +15,13 @@ FROM openjdk:8-alpine
 USER root
 RUN apk update && \
     apk add wget;
+#
 COPY ./TicketGenerator /data/TicketGenerator
+#
 # Setup JAVA_HOME -- useful for docker commandline
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
+#
 # Compile the source code
 RUN cd /data/TicketGenerator && \
     mkdir jarFiles && \
@@ -28,18 +31,22 @@ RUN cd /data/TicketGenerator && \
     wget https://repo1.maven.org/maven2/org/json/json/20190722/json-20190722.jar && \
     cd /data/TicketGenerator && \
     javac -cp /data/TicketGenerator/jarFiles/*: /data/TicketGenerator/com/ibm/mq/badge/*.java;
+#
+#
 # Switch to the MQ image
 FROM ibmcom/mq:latest
-USER root
+USER 0
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
 COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
+#
 # Copy over compiled classes from previous stage
 COPY --from=0 /data/TicketGenerator /data/TicketGenerator
-# Fix permissions for compiled classes
+#
+# Fix permissions for compiled classes and app shell script
 RUN chmod 776 -R /data/TicketGenerator
-RUN echo app:passw0rd | chpasswd
 RUN chmod a+x /data/startApp.sh
-USER mqm
+#
 # Run MQ and execute TicketGenerator
+USER 1001
 ENTRYPOINT [ "/data/startApp.sh" ]

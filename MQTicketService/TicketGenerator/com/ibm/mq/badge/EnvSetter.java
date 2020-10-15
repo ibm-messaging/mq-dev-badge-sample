@@ -63,7 +63,7 @@ public class EnvSetter {
      */
     private String HOST = "localhost"; // Host name or IP address
     private int PORT = 1414; // Listener port for your queue manager
-    private String CHANNEL = "SYSTEM.DEF.SVRCONN";
+    private String CHANNEL = "DEV.APP.SVRCONN"; // "SYSTEM.DEF.SVRCONN";
     private String QMGR = "QM1"; // Queue manager name
     private String USER = "app";
     private String PASSWORD = "pass";
