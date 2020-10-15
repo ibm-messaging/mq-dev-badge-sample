@@ -15,7 +15,7 @@
 cd /data/TicketGenerator
 
 # Setup MQ
-runmqserver &
+runmqdevserver &
 sleep 30
 # Set environment
 . /opt/mqm/bin/setmqenv -s
