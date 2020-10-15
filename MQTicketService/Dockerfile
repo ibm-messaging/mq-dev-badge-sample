@@ -26,7 +26,7 @@ RUN export JAVA_HOME
 RUN cd /data/TicketGenerator && \
     mkdir jarFiles && \
     cd jarFiles && \
-    wget https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/9.1.3.0/com.ibm.mq.allclient-9.1.3.0.jar && \
+    wget https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/9.2.0.0/com.ibm.mq.allclient-9.2.0.0.jar && \
     wget https://repo1.maven.org/maven2/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar && \
     wget https://repo1.maven.org/maven2/org/json/json/20190722/json-20190722.jar && \
     cd /data/TicketGenerator && \
@@ -34,7 +34,15 @@ RUN cd /data/TicketGenerator && \
 #
 #
 # Switch to the MQ image
-FROM ibmcom/mq:latest
+# Tested with
+#     9.2.0.0-r2
+#     9.2.0.0-r1
+#     9.1.5.0-r2
+#     9.1.5.0-r1
+#     9.1.4.0-r1
+#
+# FROM ibmcom/mq:latest
+FROM ibmcom/mq:9.1.4.0-r1
 USER 0
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh

@@ -14,7 +14,7 @@ For the challenge you will make code updates to `SessionBuilder.java`,
 To compile run
 
 ````
-javac -cp ./com.ibm.mq.allclient-9.0.4.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/demo/*.java
+javac -cp ./com.ibm.mq.allclient-9.2.0.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/demo/*.java
 ````
 
 ## Application
@@ -24,7 +24,7 @@ indicate where code changes need to be made.
 To run the application
 
 ````
-java -cp ./com.ibm.mq.allclient-9.0.4.0.jar:./javax.jms-api-2.0.1.jar:. com.ibm.mq.demo.Reseller
+java -cp ./com.ibm.mq.allclient-9.2.0.0.jar:./javax.jms-api-2.0.1.jar:. com.ibm.mq.demo.Reseller
 ````
 
 ## Environment variables
@@ -42,6 +42,26 @@ You can override the default MQ connection settings using environment variables 
 For convenience the Ticket Service is provided as MQ docker image. When started it will start
 both MQ server and the Ticket service. The MQ Server is configured to create and configure the
 queues and topics that the Ticket Service requires.
+
+## Docker FROM
+The Dockerfile bases its image on ibmcom/mq:latest
+The image is pulled from [docker hub](https://hub.docker.com/r/ibmcom/mq/)
+the ticket service has been tested with the ibmcom/mq images
+
+* 9.2.0.0-r2
+* 9.2.0.0-r1
+* 9.1.5.0-r2
+* 9.1.5.0-r1
+
+The ticker reseller docker file will not run with
+* 9.1.4.0-r1
+or earlier.
+
+Running the following command will determine which version you are using.
+
+````
+docker image inspect <your image id> --format '{{.ContainerConfig.Labels.version}}'
+````
 
 ### Docker Build
 To build the docker image, open a terminal, navigate to the MQTicketService/TicketGenerator
