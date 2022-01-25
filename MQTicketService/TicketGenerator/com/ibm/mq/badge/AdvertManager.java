@@ -8,7 +8,8 @@ import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.jms.TextMessage;
 import javax.jms.Destination;
-import javax.xml.bind.JAXBException;
+
+import jakarta.xml.bind.JAXBException;
 
 import com.ibm.mq.events.Advertisable;
 import com.ibm.mq.events.Event;
@@ -114,6 +115,7 @@ public class AdvertManager {
             }
             catch (JAXBException e) {
                 logger.log(Level.SEVERE, "A JAX exception occurred when trying to publish advert to topic", e);
+                //logger.log(Level.SEVERE, e.getLocalizedMessage());
             }
         }
         else {

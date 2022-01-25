@@ -10,8 +10,7 @@ a client application for the MQ Badge.
 
 ## Getting Started
 ### Prerequisites
-* [com.ibm.mq.allclient-9.1.3.0.jar](https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/9.1.3.0/com.ibm.mq.allclient-9.1.3.0.jar) => [Info](https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient/9.1.3.0)
-* [javax.jms-api-2.0.1.jar](https://repo1.maven.org/maven2/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar) => [Info](https://mvnrepository.com/artifact/javax.jms/javax.jms-api/2.0.1)
+* Install [Maven]()
 * [json-20190722.jar](https://repo1.maven.org/maven2/org/json/json/20190722/json-20190722.jar) => [Info](https://mvnrepository.com/artifact/org.json/json/20190722)
 
 Make sure you have these ```.jar``` files in your class path when compiling and executing code.

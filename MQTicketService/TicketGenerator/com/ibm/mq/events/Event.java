@@ -2,11 +2,11 @@ package com.ibm.mq.events;
 
 import java.io.StringWriter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 /**
  * The class that implements {@link Advertisable} and is used in
@@ -78,6 +78,8 @@ public class Event implements Advertisable {
     public Integer getCapacity() {
         return this.capacity;
     }
+
+    
 
     /**
      * Writes this class into a <b>XML</b> string that is ready

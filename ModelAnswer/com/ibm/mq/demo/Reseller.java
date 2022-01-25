@@ -55,6 +55,9 @@ public class Reseller
             if (message != null) {
               logger.fine("Tickets have been made available");
 
+              final String key = "org.glassfish.jaxb.runtime.v2.bytecode.ClassTailor.noOptimize";
+              System.setProperty(key, "true");
+
               // Challenge : Processes a publication
               int numToReserve = howMany(message);
 

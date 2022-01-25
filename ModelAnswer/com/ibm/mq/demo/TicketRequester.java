@@ -28,7 +28,8 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import javax.xml.bind.JAXBException;
+// import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
 /**
   A <code>TicketRequester</code> uses peer to peer messaging to put and get
