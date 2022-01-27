@@ -21,13 +21,6 @@ The main entry point for the reseller application is in Reseller.java
 For the challenge you will make code updates to `SessionBuilder.java`,
 `TicketSubscriber.java` and `TicketRequester.java`.
 
-## Compilation
-To compile run
-
-````
-javac -cp target/ModelAnswer-1.4.jar com/ibm/mq/demo/*.java
-````
-
 ## Application
 The application will run as a code stub. When run the application logs will
 indicate where code changes need to be made.
@@ -60,10 +53,6 @@ The image is pulled from [docker hub](https://hub.docker.com/r/ibmcom/mq/)
 the ticket service has been tested with the ibmcom/mq images
 
 * 9.2.4.0-r1
-* 9.2.0.0-r2
-* 9.2.0.0-r1
-* 9.1.5.0-r2
-* 9.1.5.0-r1
 
 The ticker reseller docker file will not run with
 * 9.1.4.0-r1

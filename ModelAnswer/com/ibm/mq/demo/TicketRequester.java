@@ -28,7 +28,6 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-// import javax.xml.bind.JAXBException;
 import jakarta.xml.bind.JAXBException;
 
 /**

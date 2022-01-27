@@ -20,4 +20,4 @@ sleep 30
 # Set environment
 . /opt/mqm/bin/setmqenv -s
 # Execute TicketGenerator
-/jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/jarFiles/*: -Djava.library.path=/opt/mqm/java/lib64 com.ibm.mq.badge.Manager
+/jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar: -Djava.library.path=/opt/mqm/java/lib64 com.ibm.mq.badge.Manager

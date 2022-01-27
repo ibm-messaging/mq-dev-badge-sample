@@ -55,6 +55,7 @@ public class Reseller
             if (message != null) {
               logger.fine("Tickets have been made available");
 
+              // Avoids an illegal reflective access operation caused by jaxb dependencies
               final String key = "org.glassfish.jaxb.runtime.v2.bytecode.ClassTailor.noOptimize";
               System.setProperty(key, "true");
 

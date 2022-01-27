@@ -75,6 +75,7 @@ public class Manager {
                     logger.info("-----");
                     logger.info("Publishing advert...");
 
+                    // Avoids an illegal reflective access operation caused by jaxb dependencies
                     final String key = "org.glassfish.jaxb.runtime.v2.bytecode.ClassTailor.noOptimize";
                     System.setProperty(key, "true");
 
