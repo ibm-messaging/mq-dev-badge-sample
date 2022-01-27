@@ -3,6 +3,17 @@ This is the Java template with code stubs for the MQ Badge developer challenge. 
 
 [Take a look at the IBM Developer Essentials course](https://ibm.biz/mq-badge)
 
+## Prerequisites
+You will need to download and install [Maven](https://maven.apache.org/download.cgi) for this application to work.
+
+If you have installed Maven, change your working directory to `ModelAnswer`.
+
+To create the `.jar` file with the dependencies required for the application, run the following command:
+
+````
+mvn clean package
+````
+
 ## Reseller.java
 The main entry point for the reseller application is in Reseller.java
 
@@ -14,7 +25,7 @@ For the challenge you will make code updates to `SessionBuilder.java`,
 To compile run
 
 ````
-javac -cp ./com.ibm.mq.allclient-9.2.0.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/demo/*.java
+javac -cp target/ModelAnswer-1.4.jar com/ibm/mq/demo/*.java
 ````
 
 ## Application
@@ -24,7 +35,7 @@ indicate where code changes need to be made.
 To run the application
 
 ````
-java -cp ./com.ibm.mq.allclient-9.2.0.0.jar:./javax.jms-api-2.0.1.jar:. com.ibm.mq.demo.Reseller
+java -cp target/ModelAnswer-1.4.jar:. com.ibm.mq.demo.Reseller
 ````
 
 ## Environment variables
@@ -48,6 +59,7 @@ The Dockerfile bases its image on ibmcom/mq:latest
 The image is pulled from [docker hub](https://hub.docker.com/r/ibmcom/mq/)
 the ticket service has been tested with the ibmcom/mq images
 
+* 9.2.4.0-r1
 * 9.2.0.0-r2
 * 9.2.0.0-r1
 * 9.1.5.0-r2
@@ -64,7 +76,7 @@ docker image inspect <your image id> --format '{{.ContainerConfig.Labels.version
 ````
 
 ### Docker Build
-To build the docker image, open a terminal, navigate to the MQTicketService/TicketGenerator
+To build the docker image, open a terminal, navigate to the `MQTicketService/TicketGenerator`
 directory, then run
 
 ````
@@ -75,7 +87,7 @@ docker build . -t mqbadge:latest
 To start the container, run
 
 ````
-docker run -e LICENSE=accept -e MQ_QMGR_NAME=QM1 -e LOG_FORMAT=json -e MQ_APP_PASSWORD=passw0rd   -p 1414:1414 -p 9443:9443 -ti --name mqebs mqbadge:latest
+docker run -e LICENSE=accept -e MQ_QMGR_NAME=QM1 -e LOG_FORMAT=json -e MQ_APP_PASSWORD=passw0rd -p 1414:1414 -p 9443:9443 -ti --name mqebs mqbadge:latest
 ````
 
 This will configure and start the MQ Server, then will start the Ticket Service application.

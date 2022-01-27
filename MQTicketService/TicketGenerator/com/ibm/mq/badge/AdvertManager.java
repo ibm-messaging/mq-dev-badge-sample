@@ -115,7 +115,6 @@ public class AdvertManager {
             }
             catch (JAXBException e) {
                 logger.log(Level.SEVERE, "A JAX exception occurred when trying to publish advert to topic", e);
-                //logger.log(Level.SEVERE, e.getLocalizedMessage());
             }
         }
         else {

@@ -75,6 +75,9 @@ public class Manager {
                     logger.info("-----");
                     logger.info("Publishing advert...");
 
+                    final String key = "org.glassfish.jaxb.runtime.v2.bytecode.ClassTailor.noOptimize";
+                    System.setProperty(key, "true");
+
                     advertManager.publishAdvert(bookableEvent);
 
                     logger.info("Advert for '" + bookableEvent.getTitle() + "' has been published");

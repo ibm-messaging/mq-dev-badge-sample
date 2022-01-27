@@ -124,9 +124,13 @@ public class EnvSetter {
             }
             catch (JMSRuntimeException e) {
                 if (e instanceof JMSSecurityRuntimeException) {
+                    e.printStackTrace();
                     logger.log(Level.SEVERE, "Credentials are incorrect, could not create context", e);
                 }
+                e.printStackTrace();
                 logger.log(Level.SEVERE, "Couldn't create connection session", e);
+                // logger.log(Level.SEVERE, "In Error Handling for connect", e);
+                // logger.log(Level.SEVERE, e.getLocalizedMessage());
             }
         }
         return context;
@@ -182,10 +186,11 @@ public class EnvSetter {
             cf.setIntProperty(WMQConstants.WMQ_PORT, PORT);
             // cf.setIntProperty(WMQConstants.WMQ_CLIENT_RECONNECT_OPTIONS, WMQConstants.WMQ_CLIENT_RECONNECT);
             cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
-            cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_BINDINGS);
-            // cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
-            // cf.setStringProperty(WMQConstants.USERID, USER);
-            // cf.setStringProperty(WMQConstants.PASSWORD, PASSWORD);
+            // cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_BINDINGS);
+            cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
+            cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
+            cf.setStringProperty(WMQConstants.USERID, USER);
+            cf.setStringProperty(WMQConstants.PASSWORD, PASSWORD);
             cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
             logger.finer("Connection factory properties have been set");
         }

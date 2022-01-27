@@ -40,6 +40,7 @@ RUN cd /data/TicketGenerator && \
 #
 # Switch to the MQ image
 # Tested with
+#     9.2.4.0-r1
 #     9.2.0.0-r2
 #     9.2.0.0-r1
 #     9.1.5.0-r2
