@@ -129,8 +129,6 @@ public class EnvSetter {
                 }
                 e.printStackTrace();
                 logger.log(Level.SEVERE, "Couldn't create connection session", e);
-                // logger.log(Level.SEVERE, "In Error Handling for connect", e);
-                // logger.log(Level.SEVERE, e.getLocalizedMessage());
             }
         }
         return context;
