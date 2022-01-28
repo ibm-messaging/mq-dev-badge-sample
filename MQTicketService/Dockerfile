@@ -29,9 +29,9 @@ RUN cd /data/TicketGenerator && \
 FROM ibmcom/mq:latest
 USER 0
 
-RUN curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
-RUN ls -l OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && file OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
-RUN tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
+RUN curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+    ls -l OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && file OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+    tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
 
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
