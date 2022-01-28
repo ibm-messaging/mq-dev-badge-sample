@@ -16,6 +16,12 @@ USER root
 #
 COPY ./TicketGenerator /data/TicketGenerator
 #
+#
+# Compile the source code
+RUN cd /data/TicketGenerator && \
+    mvn -f /data/TicketGenerator/pom.xml clean package;
+#
+#
 # Switch to the MQ image
 # Tested with
 #     9.2.4.0-r1
