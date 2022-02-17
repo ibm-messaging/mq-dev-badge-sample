@@ -22,9 +22,9 @@ import java.util.logging.*;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class EventFactory
 {
