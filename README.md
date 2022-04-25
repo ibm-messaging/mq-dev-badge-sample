@@ -12,9 +12,8 @@ both MQ server and the Ticket service. The MQ Server is configured to create and
 queues and topics that the Ticket Service requires.
 
 ## Docker FROM
-The Dockerfile bases its image on ibmcom/mq:latest
-The image is pulled from [docker hub](https://hub.docker.com/r/ibmcom/mq/)
-the ticket service has been tested with the ibmcom/mq images.
+The Dockerfile bases its image on icr.io/ibm-messaging/mq:latest
+The image is pulled from the IBM Container Registry.
 
 * 9.2.4.0-r1
 
