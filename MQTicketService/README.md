@@ -24,7 +24,14 @@ Steps for running the application on your local machine - <b>Do not follows thes
     * ```cd mq-dev-badge-sample/MQTicketService/TicketGenerator```
 1. Build the application by running the following command:
     * ```mvn clean package```
-1. We need to create a Queue Manager for the application to work. We do this by running a container. You can follow the steps in the [Developer Essentials Course](https://developer.ibm.com/learningpaths/ibm-mq-badge/create-configure-queue-manager/) to create a container with the MQ image.
+1. We need to create a Queue Manager for the application to work. We do this by running a container. You will need to first build the container image:
+    * ```cd ..```
+    * ```docker build . -t mqbadge:latest```
+
+   Following this you will create and run a container in the TicketGenerator directory.
+    * ```cd TicketGenerator```
+    * ```docker run -e LICENSE=accept -e MQ_QMGR_NAME=QM1 -e LOG_FORMAT=json -e MQ_APP_PASSWORD=passw0rd -p 1414:1414 -p 9443:9443 --detach -ti --name mqebs mqbadge:latest```
+
 1. Execute the code.
     * Linux & Mac ```java -cp target/TicketGenerator-1.4.jar: com.ibm.mq.badge.Manager```
     * Windows ```java -cp target\TicketGenerator-1.4.jar; com.ibm.mq.badge.Manager```
