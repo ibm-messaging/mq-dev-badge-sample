@@ -40,7 +40,7 @@ docker build . -t mqbadge:latest
 To start the container, run
 
 ````
-docker run -e LICENSE=accept -e MQ_QMGR_NAME=QM1 -e LOG_FORMAT=json -e MQ_APP_PASSWORD=passw0rd -p 1414:1414 -p 9443:9443 --detach -ti --name mqebs mqbadge:latest
+docker run -e LICENSE=accept -e MQ_QMGR_NAME=QM1 -e LOG_FORMAT=json -e MQ_APP_PASSWORD=passw0rd -p 1414:1414 -p 9443:9443 -ti --name mqebs mqbadge:latest
 ````
 
 This will configure and start the MQ Server, then will start the Ticket Service application.
