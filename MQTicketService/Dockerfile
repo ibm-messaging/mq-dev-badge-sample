@@ -26,7 +26,7 @@ RUN cd /data/TicketGenerator && \
 # Tested with
 #     9.2.4.0-r1
 #
-FROM ibmcom/mq:latest
+FROM icr.io/ibm-messaging/mq:latest
 USER 0
 
 RUN curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
