@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM maven:3.6-openjdk-11 AS build
+FROM docker.io/library/maven:3.6-openjdk-11 AS build
 USER root
 #
 COPY ./TicketGenerator /data/TicketGenerator
