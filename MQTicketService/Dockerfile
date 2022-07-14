@@ -25,6 +25,7 @@ RUN cd /data/TicketGenerator && \
 # Switch to the MQ image
 # Tested with
 #     9.2.5.0-r2
+#     9.3.0.0-r1
 #
 FROM icr.io/ibm-messaging/mq:latest
 USER 0
