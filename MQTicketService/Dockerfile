@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM maven:3.6-openjdk-11 AS build
+FROM docker.io/library/maven:3.6-openjdk-11 AS build
 USER root
 #
 COPY ./TicketGenerator /data/TicketGenerator
@@ -25,6 +25,7 @@ RUN cd /data/TicketGenerator && \
 # Switch to the MQ image
 # Tested with
 #     9.2.5.0-r2
+#     9.3.0.0-r1
 #
 FROM icr.io/ibm-messaging/mq:latest
 USER 0
