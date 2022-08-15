@@ -15,7 +15,6 @@ queues and topics that the Ticket Service requires.
 The Dockerfile bases its image on icr.io/ibm-messaging/mq:latest
 The image is pulled from the IBM Container Registry.
 
-* 9.2.4.0-r1
 
 The ticker reseller docker file will not run with
 * 9.1.4.0-r1
