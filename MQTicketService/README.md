@@ -43,5 +43,7 @@ from the `startApp.sh` file, then the ticket generator app will not be started b
   * ```mvn clean package```
 
 Run the ticket generator app by executing
-    * Linux & Mac ```java -cp target/TicketGenerator-1.4.jar: com.ibm.mq.badge.Manager```
-    * Windows ```java -cp target\TicketGenerator-1.4.jar; com.ibm.mq.badge.Manager```
+
+  * Linux & Mac ```java -cp target/TicketGenerator-1.4.jar: com.ibm.mq.badge.Manager```
+  
+  * Windows ```java -cp target\TicketGenerator-1.4.jar; com.ibm.mq.badge.Manager```
