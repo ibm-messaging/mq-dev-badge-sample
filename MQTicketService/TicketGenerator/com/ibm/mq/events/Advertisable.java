@@ -1,6 +1,6 @@
 package com.ibm.mq.events;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
 import com.ibm.mq.badge.AdvertManager;
 

@@ -2,6 +2,12 @@ package com.ibm.mq.events;
 
 import java.util.logging.Logger;
 
+import java.io.StringWriter;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+
 /**
  * NOT BEING USED
  */
@@ -62,4 +68,17 @@ public class BookableEvent implements Advertisable {
         logger.fine("Advert: " + advert.getTitle());
         return advert;
     }
+
+    public String toXML() throws JAXBException
+	{
+        StringWriter writer = new StringWriter();
+        JAXBContext jaxbContext = JAXBContext.newInstance(this.getClass());
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+        // output pretty printed
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        jaxbMarshaller.marshal(this, writer);
+        return writer.toString();
+	}
 }

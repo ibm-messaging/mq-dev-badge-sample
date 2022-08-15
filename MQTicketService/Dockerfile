@@ -1,4 +1,4 @@
-# © Copyright 2019 IBM Corporation
+# © Copyright 2019, 2022 IBM Corporation
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,35 +11,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM openjdk:8-alpine
+FROM docker.io/library/maven:3.6-openjdk-11 AS build
 USER root
-RUN apk update && \
-    apk add wget;
+#
 COPY ./TicketGenerator /data/TicketGenerator
-# Setup JAVA_HOME -- useful for docker commandline
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-RUN export JAVA_HOME
+#
+#
 # Compile the source code
 RUN cd /data/TicketGenerator && \
-    mkdir jarFiles && \
-    cd jarFiles && \
-    wget https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/9.1.3.0/com.ibm.mq.allclient-9.1.3.0.jar && \
-    wget https://repo1.maven.org/maven2/javax/jms/javax.jms-api/2.0.1/javax.jms-api-2.0.1.jar && \
-    wget https://repo1.maven.org/maven2/org/json/json/20190722/json-20190722.jar && \
-    cd /data/TicketGenerator && \
-    javac -cp /data/TicketGenerator/jarFiles/*: /data/TicketGenerator/com/ibm/mq/badge/*.java;
+    mvn -f /data/TicketGenerator/pom.xml clean package;
+#
+#
 # Switch to the MQ image
-FROM ibmcom/mq:latest
-USER root
+# Tested with
+#     9.2.5.0-r2
+#     9.3.0.0-r1
+#
+FROM icr.io/ibm-messaging/mq:latest
+USER 0
+
+RUN curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+    ls -l OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && file OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+    tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
+
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
 COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
+#
 # Copy over compiled classes from previous stage
 COPY --from=0 /data/TicketGenerator /data/TicketGenerator
-# Fix permissions for compiled classes
+#
+# Fix permissions for compiled classes and app shell script
 RUN chmod 776 -R /data/TicketGenerator
-RUN echo app:passw0rd | chpasswd
 RUN chmod a+x /data/startApp.sh
-USER mqm
+#
 # Run MQ and execute TicketGenerator
+USER 1001
 ENTRYPOINT [ "/data/startApp.sh" ]

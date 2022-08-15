@@ -8,7 +8,8 @@ import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.jms.TextMessage;
 import javax.jms.Destination;
-import javax.xml.bind.JAXBException;
+
+import jakarta.xml.bind.JAXBException;
 
 import com.ibm.mq.events.Advertisable;
 import com.ibm.mq.events.Event;
