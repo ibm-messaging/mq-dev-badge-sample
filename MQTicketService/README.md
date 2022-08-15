@@ -39,7 +39,7 @@ you still need a Queue Manager. If you comment out the
 /jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager
 ````
 
-from the `startApp.sh` file, then the ticket generator app will not be started by the container. You will need to rebuild the image. After that `cd` to the `TicketGenerator` directory and run
+from the `startApp.sh` file, then the ticket generator app will not be started by the container, but MQ will. You will need to rebuild the image. After that `cd` to the `TicketGenerator` directory and run
   * ```mvn clean package```
 
 Run the ticket generator app by executing
