@@ -10,8 +10,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-FROM docker.io/library/maven:3.6-openjdk-11 AS build
+#
+# Specify base image and platform for the build
+ARG imageName=icr.io/ibm-messaging/mq:latest
+ARG platName=docker.io/library/maven:3.6-openjdk-11
+#
+# stage 1
+#
+FROM $platName AS build
 USER root
 #
 COPY ./TicketGenerator /data/TicketGenerator
@@ -21,21 +27,46 @@ COPY ./TicketGenerator /data/TicketGenerator
 RUN cd /data/TicketGenerator && \
     mvn -f /data/TicketGenerator/pom.xml clean package;
 #
+# stage 2
+#
 #
 # Switch to the MQ image
-# Tested with
+# Tested with 
 #     9.2.5.0-r2
 #     9.3.0.0-r1
 #
-FROM icr.io/ibm-messaging/mq:latest
+FROM $imageName
+#
+# Specify platform architecture - either arm64 or amd64(default)
+ARG platformArch=amd64
+#
+# Set platform architecture as an environment variable
+ENV platformArch=${platformArch}
+#
 USER 0
-
-RUN curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+#
+#
+RUN if [ "$platformArch" == "amd64" ]; then \
+    curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
     ls -l OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && file OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
-    tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz
-
+    tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz; \
+	fi
+#
+RUN if [ "$platformArch" == "arm64" ]; then \
+    curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
+    ls -l OpenJDK11U.tar.gz && file OpenJDK11U.tar.gz && \
+    tar -xvzf OpenJDK11U.tar.gz; \
+    fi
+#
+#
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
+#
+# fix line ending issue on windows system
+RUN if [ "$platformArch" == "amd64" ]; then \
+    sed -i 's/\r$//' /data/startApp.sh; \
+  fi
+#
 COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
 #
 # Copy over compiled classes from previous stage
@@ -48,3 +79,22 @@ RUN chmod a+x /data/startApp.sh
 # Run MQ and execute TicketGenerator
 USER 1001
 ENTRYPOINT [ "/data/startApp.sh" ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
