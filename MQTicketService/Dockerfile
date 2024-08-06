@@ -1,4 +1,4 @@
-# © Copyright 2019, 2022 IBM Corporation
+# © Copyright 2019, 2024 IBM Corporation
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,13 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Specify base image and platform for the build
-ARG imageName=icr.io/ibm-messaging/mq:latest
-ARG platName=docker.io/library/maven:3.6-openjdk-11
+# Specify default base images 
+ARG baseImageRunStage=icr.io/ibm-messaging/mq:latest
+ARG baseImageBuildStage=docker.io/library/maven:3.6-openjdk-11
 #
 # stage 1
 #
-FROM $platName AS build
+FROM $baseImageBuildStage AS build
 USER root
 #
 COPY ./TicketGenerator /data/TicketGenerator
@@ -32,10 +32,9 @@ RUN cd /data/TicketGenerator && \
 #
 # Switch to the MQ image
 # Tested with 
-#     9.2.5.0-r2
-#     9.3.0.0-r1
+#     9.4.0.0 
 #
-FROM $imageName
+FROM $baseImageRunStage
 #
 # Specify platform architecture - either arm64 or amd64(default)
 ARG platformArch=amd64
@@ -47,10 +46,11 @@ USER 0
 #
 #
 RUN if [ "$platformArch" == "amd64" ]; then \
-    curl -Lo OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
-    ls -l OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && file OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
-    tar -xvzf OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz; \
+    curl -Lo OpenJDK11Ux64.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+    ls -l OpenJDK11Ux64.tar.gz && file OpenJDK11Ux64.tar.gz && \
+    tar -xvzf OpenJDK11Ux64.tar.gz; \
 	fi
+# 
 #
 RUN if [ "$platformArch" == "arm64" ]; then \
     curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
@@ -70,7 +70,7 @@ RUN if [ "$platformArch" == "amd64" ]; then \
 COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
 #
 # Copy over compiled classes from previous stage
-COPY --from=0 /data/TicketGenerator /data/TicketGenerator
+COPY --from=build /data/TicketGenerator /data/TicketGenerator
 #
 # Fix permissions for compiled classes and app shell script
 RUN chmod 776 -R /data/TicketGenerator
@@ -79,22 +79,3 @@ RUN chmod a+x /data/startApp.sh
 # Run MQ and execute TicketGenerator
 USER 1001
 ENTRYPOINT [ "/data/startApp.sh" ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
