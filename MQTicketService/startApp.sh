@@ -1,5 +1,5 @@
 #!/bin/bash
-# © Copyright 2019 IBM Corporation
+# © Copyright 2019, 2024 IBM Corporation
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,4 +20,14 @@ sleep 30
 # Set environment
 . /opt/mqm/bin/setmqenv -s
 # Execute TicketGenerator
-/jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager
+
+if [ "$envPlatformArch" == "amd64" ]
+then
+    /jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
+elif [ "$envPlatformArch" == "arm64" ] 
+then
+    /jdk-11.0.22+7-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
+ else 
+    echo "Error: Valid platform architectures are amd64 or arm64" 
+    exit 1
+fi
