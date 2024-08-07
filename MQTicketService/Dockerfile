@@ -47,6 +47,7 @@ USER 0
 #
 #
 # install platform specific jdk libraries
+# if architecture is not amd64 or arm64, then forcing abort of build
 RUN if [ "$platformArch" == "amd64" ]; then \
         curl -Lo OpenJDK11Ux64.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
         tar -xvzf OpenJDK11Ux64.tar.gz; \
@@ -54,8 +55,8 @@ RUN if [ "$platformArch" == "amd64" ]; then \
         curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
         tar -xvzf OpenJDK11U.tar.gz; \
     else \
-        echo "Error: Valid platform architectures are amd64 or arm64" \
-        exit 1; \
+        echo "Error: Valid platform architectures are amd64 or arm64" && \
+        return 1;\     
     fi
 #
 # Copy over config and scripts
