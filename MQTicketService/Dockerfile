@@ -12,8 +12,9 @@
 # limitations under the License.
 #
 # Specify default base images 
-ARG baseImageRunStage=icr.io/ibm-messaging/mq:latest
+# Can be overidden with different arguments for Mac and Linux in the build command
 ARG baseImageBuildStage=docker.io/library/maven:3.6-openjdk-11
+ARG baseImageRunStage=icr.io/ibm-messaging/mq:latest
 #
 # stage 1
 #
@@ -40,24 +41,22 @@ FROM $baseImageRunStage
 ARG platformArch=amd64
 #
 # Set platform architecture as an environment variable
-ENV platformArch=${platformArch}
+ENV envPlatformArch=${platformArch}
 #
 USER 0
 #
 #
+# install platform specific jdk libraries
 RUN if [ "$platformArch" == "amd64" ]; then \
-    curl -Lo OpenJDK11Ux64.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
-    ls -l OpenJDK11Ux64.tar.gz && file OpenJDK11Ux64.tar.gz && \
-    tar -xvzf OpenJDK11Ux64.tar.gz; \
-	fi
-# 
-#
-RUN if [ "$platformArch" == "arm64" ]; then \
-    curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
-    ls -l OpenJDK11U.tar.gz && file OpenJDK11U.tar.gz && \
-    tar -xvzf OpenJDK11U.tar.gz; \
+        curl -Lo OpenJDK11Ux64.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
+        tar -xvzf OpenJDK11Ux64.tar.gz; \
+	elif [ "$platformArch" == "arm64" ]; then \
+        curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
+        tar -xvzf OpenJDK11U.tar.gz; \
+    else \
+        echo "Error: Valid platform architectures are amd64 or arm64" \
+        exit 1; \
     fi
-#
 #
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh

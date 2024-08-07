@@ -21,13 +21,13 @@ sleep 30
 . /opt/mqm/bin/setmqenv -s
 # Execute TicketGenerator
 
-
-if [ "$platformArch" == "amd64" ]
+if [ "$envPlatformArch" == "amd64" ]
 then
-/jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
-fi
-  
-if [ "$platformArch" == "arm64" ] 
+    /jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
+elif [ "$envPlatformArch" == "arm64" ] 
 then
-/jdk-11.0.22+7-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
+    /jdk-11.0.22+7-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
+ else 
+    echo "Error: Valid platform architectures are amd64 or arm64" 
+    exit 1
 fi
