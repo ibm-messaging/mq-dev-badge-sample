@@ -61,13 +61,14 @@ RUN if [ "$platformArch" == "amd64" ]; then \
 #
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
+COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
 #
 # fix line ending issue on windows system
 RUN if [ "$platformArch" == "amd64" ]; then \
-    sed -i 's/\r$//' /data/startApp.sh; \
+    sed -i 's/\r$//' /data/startApp.sh && \
+    sed -i 's/\r$//' /etc/mqm/20-config.mqsc; \
   fi
-#
-COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
+#    
 #
 # Copy over compiled classes from previous stage
 COPY --from=build /data/TicketGenerator /data/TicketGenerator
