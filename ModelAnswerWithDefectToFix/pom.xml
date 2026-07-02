@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ibm.mq.demo</groupId>
-  <artifactId>ModelAnswer</artifactId>
+  <artifactId>ModelAnswerWithDefectToFix</artifactId>
   <version>1.4</version>
 
   <name>mq-dev-badge-sample</name>
