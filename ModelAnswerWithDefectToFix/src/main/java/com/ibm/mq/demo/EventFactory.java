@@ -19,8 +19,8 @@ package com.ibm.mq.demo;
 import java.io.StringReader;
 import java.util.logging.*;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
