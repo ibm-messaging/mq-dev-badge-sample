@@ -19,13 +19,14 @@ package com.ibm.mq.demo;
 import java.util.logging.*;
 import java.lang.NumberFormatException;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.Connection;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 
-import com.ibm.msg.client.jms.JmsConnectionFactory;
-import com.ibm.msg.client.jms.JmsFactoryFactory;
-import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.msg.client.jakarta.jms.JmsConnectionFactory;
+import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory;
+import com.ibm.msg.client.jakarta.jms.JmsConstants;
+import com.ibm.msg.client.jakarta.wmq.WMQConstants;
 
 /**
   A <code>SessionBuilder</code> is used to establish and close a
@@ -81,7 +82,7 @@ public class SessionBuilder
         }
 		  }
 
-      JmsFactoryFactory ff = JmsFactoryFactory.getInstance(WMQConstants.WMQ_PROVIDER);
+      JmsFactoryFactory ff = JmsFactoryFactory.getInstance(JmsConstants.JAKARTA_WMQ_PROVIDER);
       JmsConnectionFactory cf = ff.createConnectionFactory();
 
       // Set the properties

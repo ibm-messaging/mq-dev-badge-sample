@@ -19,8 +19,8 @@ package com.ibm.mq.demo;
 import java.util.logging.*;
 import java.util.Scanner;
 
-import javax.jms.Message;
-import javax.jms.Session;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
 
 public class Reseller
 {
