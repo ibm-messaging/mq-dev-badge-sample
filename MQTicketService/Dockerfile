@@ -14,7 +14,7 @@
 # Specify default base images 
 # Can be overidden with different arguments for Mac and Linux in the build command
 ARG baseImageBuildStage=docker.io/library/maven:3.6-openjdk-11
-ARG baseImageRunStage=icr.io/ibm-messaging/mq:latest
+ARG baseImageRunStage=icr.io/ibm-messaging/mq:9.4.0.25-r3
 #
 # stage 1
 #
