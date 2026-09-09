@@ -1,1 +1,6 @@
 /TicketGenerator/target/
+/TicketGenerator/doc/
+**/.git/
+**/.DS_Store
+**/.idea/
+**/.vscode/
