@@ -20,14 +20,5 @@ sleep 30
 # Set environment
 . /opt/mqm/bin/setmqenv -s
 # Execute TicketGenerator
-
-if [ "$envPlatformArch" == "amd64" ]
-then
-    /jdk-11.0.13+8-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
-elif [ "$envPlatformArch" == "arm64" ] 
-then
-    /jdk-11.0.22+7-jre/bin/java -cp /data/TicketGenerator/target/TicketGenerator-1.4.jar com.ibm.mq.badge.Manager 
- else 
-    echo "Error: Valid platform architectures are amd64 or arm64" 
-    exit 1
-fi
+# /OpenJDK is a symlink created at build time to the architecture specific JRE
+/OpenJDK/bin/java -cp /data/TicketGenerator/target/TicketGenerator-${APP_VERSION}.jar com.ibm.mq.badge.Manager

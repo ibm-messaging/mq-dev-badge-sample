@@ -15,68 +15,79 @@
 # Can be overidden with different arguments for Mac and Linux in the build command
 ARG baseImageBuildStage=docker.io/library/maven:3.6-openjdk-11
 ARG baseImageRunStage=icr.io/ibm-messaging/mq:latest
-#
+# Specify platform architecture - either arm64 or amd64(default)
+ARG platformArch=amd64
+# Specify the Temurin OpenJDK 11 JRE version used for each architecture
+ARG openjdkVersionAmd64=11.0.32.1+1
+ARG openjdkVersionArm64=11.0.32.1+1
+# Must match <version> in TicketGenerator/pom.xml
+ARG appVersion=1.4
+
 # stage 1
-#
 FROM $baseImageBuildStage AS build
+# A global ARG is out of scope inside a stage, so re-declare it here.
+ARG platformArch
+ARG openjdkVersionAmd64
+ARG openjdkVersionArm64
 USER root
-#
+
 COPY ./TicketGenerator /data/TicketGenerator
-#
-#
+
 # Compile the source code
 RUN cd /data/TicketGenerator && \
     mvn -f /data/TicketGenerator/pom.xml clean package;
-#
-# stage 2
-#
-#
-# Switch to the MQ image
-# Tested with 
-#     9.4.0.0 
-#
-FROM $baseImageRunStage
-#
-# Specify platform architecture - either arm64 or amd64(default)
-ARG platformArch=amd64
-#
-# Set platform architecture as an environment variable
-ENV envPlatformArch=${platformArch}
-#
-USER 0
-#
-#
-# install platform specific jdk libraries
+
+
+# get platform specific jdk libraries
 # if architecture is not amd64 or arm64, then forcing abort of build
-RUN if [ "$platformArch" == "amd64" ]; then \
-        curl -Lo OpenJDK11Ux64.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.13_8.tar.gz && \
-        tar -xvzf OpenJDK11Ux64.tar.gz; \
-	elif [ "$platformArch" == "arm64" ]; then \
-        curl -Lo OpenJDK11U.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%2B7/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.22_7.tar.gz && \
-        tar -xvzf OpenJDK11U.tar.gz; \
+# Staged under /tmp/jdkroot so the versioned JRE folder name survives the copy into stage 2.
+RUN set -eu; \
+    mkdir -p /tmp/jdkroot; \
+    if [ "$platformArch" = "amd64" ]; then \
+        jdkVersion="$openjdkVersionAmd64"; jdkArch="x64"; \
+    elif [ "$platformArch" = "arm64" ]; then \
+        jdkVersion="$openjdkVersionArm64"; jdkArch="aarch64"; \
     else \
-        echo "Error: Valid platform architectures are amd64 or arm64" && \
-        return 1;\     
-    fi
-#
+        echo "Error: Valid platform architectures are amd64 or arm64"; \
+        exit 1; \
+    fi; \
+    releaseTag=$(echo "$jdkVersion" | sed 's/+/%2B/'); \
+    fileVersion=$(echo "$jdkVersion" | sed 's/+/_/'); \
+    curl -fLo /tmp/OpenJDK11U.tar.gz \
+        "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-${releaseTag}/OpenJDK11U-jre_${jdkArch}_linux_hotspot_${fileVersion}.tar.gz"; \
+    tar -xzf /tmp/OpenJDK11U.tar.gz -C /tmp/jdkroot/
+
+# stage 2
+# Switch to the MQ image
+FROM $baseImageRunStage
+# A global ARG is out of scope inside a stage, so re-declare it here.
+ARG platformArch
+ARG appVersion
+ENV APP_VERSION=${appVersion}
+
+USER 0
+
 # Copy over config and scripts
 COPY ./startApp.sh /data/startApp.sh
 COPY ./20-config.mqsc /etc/mqm/20-config.mqsc
-#
+
 # fix line ending issue on windows system
-RUN if [ "$platformArch" == "amd64" ]; then \
+RUN if [ "$platformArch" = "amd64" ]; then \
     sed -i 's/\r$//' /data/startApp.sh && \
     sed -i 's/\r$//' /etc/mqm/20-config.mqsc; \
   fi
-#    
-#
+
 # Copy over compiled classes from previous stage
 COPY --from=build /data/TicketGenerator /data/TicketGenerator
-#
+COPY --from=build /tmp/jdkroot/ /
+
+# Stable, architecture independent path for startApp.sh
+RUN ln -s "$(ls -d /jdk-*-jre)" /OpenJDK
+
 # Fix permissions for compiled classes and app shell script
 RUN chmod 776 -R /data/TicketGenerator
 RUN chmod a+x /data/startApp.sh
-#
+
 # Run MQ and execute TicketGenerator
 USER 1001
 ENTRYPOINT [ "/data/startApp.sh" ]
